@@ -5,7 +5,7 @@
 #include<string.h>
 int num_lines, num_chars, num_words;;
 
-int  checkfile()
+int  main()
 {
 	int fd,nbytes;
 	char ch[1000];
@@ -22,10 +22,10 @@ int  checkfile()
         {
             /* to Check new line */
             if (ch[i] == '\n')
-               lines++;
+               num_lines++;
             /* to  Check words */
             if (ch[i] == ' ' || ch[i] == '\t')
-               words++;
+               num_words++;
         }
         num_chars=nbytes;
     }
