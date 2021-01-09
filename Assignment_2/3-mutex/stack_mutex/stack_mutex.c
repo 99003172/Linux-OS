@@ -18,14 +18,14 @@ void *producer(void *pno) {
   else {
     for (int i = 0; i < MaxItems; i++) {
       item = rand()%5;
-      sem_wait(&empty);
+
       /* insert value item into the buffer */
       buffer[buf_in] = item;
       printf("Producer %d: Insert Item %d at %d\n", *((int *)pno), buffer[buf_in],
              buf_in);
       buf_in = (buf_in + 1) % BufferSize;
-      sem_post(&full);
-	  pthread_mutex_unlock(&mutex);
+     
+      pthread_mutex_unlock(&mutex);
     }
   }
 }
@@ -39,7 +39,7 @@ void *consumer(void *cno) {
     for (int i = 0; i < MaxItems; i++) {
       pthread_mutex_lock(&mutex);
       /* take one unit of data from the buffer */
-      item = buffer[out];
+      item = buffer[buf_out];
       printf("Consumer %d: Remove Item %d from %d\n", *((int *)cno), item, buf_out);
       buf_out = (buf_out + 1) % BufferSize;
       pthread_mutex_unlock(&mutex);

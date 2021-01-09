@@ -3,7 +3,7 @@ SRC = *.c
 INC = *.h
 
 all: $(SRC)
-	gcc $(SRC) $(INC) -lpthread -o a.out
+	gcc $(SRC) $(INC) -lpthread -o a.out -lrt
 
 run:
 	./a.out

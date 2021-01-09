@@ -38,7 +38,7 @@ void *consumer(void *cno) {
     for (int i = 0; i < MaxItems; i++) {
       sem_wait(&full);
       /* take one unit of data from the buffer */
-      item = buffer[out];
+      item = buffer[buf_out];
       printf("Consumer %d: Remove Item %d from %d\n", *((int *)cno), item, buf_out);
       buf_out = (buf_out + 1) % BufferSize;
       sem_post(&empty);
