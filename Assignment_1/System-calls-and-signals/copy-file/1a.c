@@ -1,12 +1,6 @@
+#include "copy_header.h"
 
-#include<unistd.h>
-#include<fcntl.h>
-
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-
-int main()
+int copyfile()
 {
 	int fd,nbytes,wd;
 	fd=open("sample.txt",O_RDONLY,0666);
