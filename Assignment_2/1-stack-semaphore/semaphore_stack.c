@@ -6,32 +6,32 @@
 
 sem_t empty;
 sem_t full;
-int in = 0;
-int out = 0;
+int buf_in = 0;
+int buf_out = 0;
 int item = 0;
 int buffer[BufferSize];
 
 void *producer(void *pno) {
-  if (in == BufferSize - 1) {
-    printf("Producer Stack is full \n");
+  if (buf_in == BufferSize - 1) {
+    printf("Producer buffer is full \n");
   } 
   else {
     for (int i = 0; i < MaxItems; i++) {
-      item = rand();
+      item = rand()%5;
       sem_wait(&empty);
-      /* put value item into the buffer */
-      buffer[in] = item;
-      printf("Producer %d: Insert Item %d at %d\n", *((int *)pno), buffer[in],
-             in);
-      in = (in + 1) % BufferSize;
+      /* insert value item into the buffer */
+      buffer[buf_in] = item;
+      printf("Producer %d: Insert Item %d at %d\n", *((int *)pno), buffer[buf_in],
+             buf_in);
+      buf_in = (buf_in + 1) % BufferSize;
       sem_post(&full);
     }
   }
 }
 
 void *consumer(void *cno) {
-  if (out == BufferSize - 1) {
-    printf("Consumer Stack is full\n");
+  if (buf_out == BufferSize - 1) {
+    printf("Consumer wait till producer put data to buffer\n");
   } 
   else {
     int item = 0;
@@ -39,8 +39,8 @@ void *consumer(void *cno) {
       sem_wait(&full);
       /* take one unit of data from the buffer */
       item = buffer[out];
-      printf("Consumer %d: Remove Item %d from %d\n", *((int *)cno), item, out);
-      out = (out + 1) % BufferSize;
+      printf("Consumer %d: Remove Item %d from %d\n", *((int *)cno), item, buf_out);
+      buf_out = (buf_out + 1) % BufferSize;
       sem_post(&empty);
     }
   }
@@ -51,13 +51,13 @@ void main() {
   sem_init(&empty, 0, BufferSize);
   sem_init(&full, 0, 0);
 
-  int a[5] = {1, 2, 3, 4, 5}; 
+  int arr[5] = {1, 2, 3, 4, 5}; 
 
   for (int i = 0; i < 5; i++) {
-    pthread_create(&pro[i], NULL, (void *)producer, (void *)&a[i]);
+    pthread_create(&pro[i], NULL, (void *)producer, (void *)&arr[i]);
   }
   for (int i = 0; i < 5; i++) {
-    pthread_create(&con[i], NULL, (void *)consumer, (void *)&a[i]);
+    pthread_create(&con[i], NULL, (void *)consumer, (void *)&arr[i]);
   }
 
   for (int i = 0; i < 5; i++) {

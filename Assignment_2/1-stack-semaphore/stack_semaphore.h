@@ -1,11 +1,10 @@
-#ifndef __STACK_SEMAPHORES_H
-#define __STACK_SEMAPHORES_H
+#ifndef __STACK_SEMAPHORE_H
+#define __STACK_SEMAPHORE_H
 
 #include <pthread.h>
 #include <semaphore.h>
 #include <stdlib.h>
 #include <stdio.h>
 
-void StackSemaphores();
 
 #endif
